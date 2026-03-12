@@ -115,15 +115,24 @@ exports.paymentData = async (req, res) => {
     }
 }
 
-// Payment status of the user
+// Payment Status of the user
 exports.paymentStatus = async (req, res) => {
+
     try {
-        const userID = req.body.userID
+        const { userId, year } = req.body
 
-        const user = await User.findById(userID)
-        console.log(user)
+        const payStatus = await Status.create({
+            userId,
+            year
+        })
 
-        res.json(user)
+        res.status(201).json({
+            success: true,
+            message: "User created successfully",
+            data: payStatus
+        })
+        console.log(userId)
+        console.log(year)
 
     } catch (error) {
         console.error(error)

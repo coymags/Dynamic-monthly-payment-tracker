@@ -62,23 +62,25 @@ function Login() {
             })
             
             //User ID from database
-            const userID = response.data._id
+            const userId = response.data._id
 
             // Extract ISO date to months, day and year
             const createdAt = new Date(response.data.createdAt)
             const year = createdAt.getUTCFullYear()
-            const month = createdAt.getUTCMonth() + 1
+            const createdMonth = createdAt.getUTCMonth() + 1
             const day = createdAt.getUTCDate()
-            console.log(`Year: ${year}, Month: ${month}, Day:${day}`)
+            console.log(`Year: ${year}, Month: ${createdMonth}, Day:${day}`)
 
             try {
-                const pay = await axios.post('http://localhost:3000/users/paymentstatus',{userID},{
+                //Request to Create/POST into the server. userController will handle the request
+                const pay  = await axios.post('http://localhost:3000/users/paymentstatus',{userId, year},{
                     headers:{
                         "Authorization": `Bearer ${token}`
                     }
                 })
 
-                console.log(`Compare user req: ${userID}, res:${pay}`)
+                console.log("Compare user req:", userId)
+                console.log(pay)
 
             } catch (error) {
                 console.error(error)
