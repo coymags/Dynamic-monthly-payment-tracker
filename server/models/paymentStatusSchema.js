@@ -14,8 +14,7 @@ const paymentStatus = new mongoose.Schema({
         required: true
     },
     year:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        type: Number,
         required: true
     },
     months:{

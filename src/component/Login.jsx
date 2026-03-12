@@ -10,11 +10,6 @@ function Login() {
     //Declare useNavigate functin
     const navigate = useNavigate();
 
-    //data handle from the database
-    const [date, setDate] = useState(null)
-    const [userID, setUserID] = useState(null)
-
-
     //Hook to toggle Authentication error for username and password
     const [ userSetter, setUserErrsetter ] = useState(false);
     const [ passSetter, setPassSetter ] = useState(false)
@@ -66,7 +61,29 @@ function Login() {
                 }
             })
             
-            console.log(response.data._id)
+            //User ID from database
+            const userID = response.data._id
+
+            // Extract ISO date to months, day and year
+            const createdAt = new Date(response.data.createdAt)
+            const year = createdAt.getUTCFullYear()
+            const month = createdAt.getUTCMonth() + 1
+            const day = createdAt.getUTCDate()
+            console.log(`Year: ${year}, Month: ${month}, Day:${day}`)
+
+            try {
+                const pay = await axios.post('http://localhost:3000/users/paymentstatus',{userID},{
+                    headers:{
+                        "Authorization": `Bearer ${token}`
+                    }
+                })
+
+                console.log(`Compare user req: ${userID}, res:${pay}`)
+
+            } catch (error) {
+                console.error(error)
+            }
+            
             
         }catch(err){
             

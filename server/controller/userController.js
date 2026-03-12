@@ -108,7 +108,7 @@ exports.paymentData = async (req, res) => {
             payDate
         }) 
 
-        res.json(userPaid)
+        res.json(req.body)
 
     } catch (error) {
         console.error(error)
@@ -118,7 +118,13 @@ exports.paymentData = async (req, res) => {
 // Payment status of the user
 exports.paymentStatus = async (req, res) => {
     try {
-        
+        const userID = req.body.userID
+
+        const user = await User.findById(userID)
+        console.log(user)
+
+        res.json(user)
+
     } catch (error) {
         console.error(error)
     }

@@ -23,6 +23,9 @@ router.post('/login', userController.userLogin);
 //Protected Route for payment data
 router.post('/payment', protect, userController.paymentData)
 
+//Protected Routes for Payment Status
+router.post('/paymentstatus', protect, userController.paymentStatus)
+
 // Protected Routes (When client try to access to /home or /dashboard in browse they will redirect to login page)
 router.get('/profile', protect, userController.getUser, (req, res) => {
     res.json(req.user)
