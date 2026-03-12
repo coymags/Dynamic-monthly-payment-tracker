@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 const User = require('../models/userSchema')// Schema for database connected to database
 const Plan = require('../models/planSchema')
 const Paid = require('../models/paymentSchema')
@@ -137,6 +138,18 @@ exports.paymentStatus = async (req, res) => {
     } catch (error) {
         console.error(error)
     }
+}
+
+//Get status of the user for checking
+exports.getStatus = async (req, res) => {
+    const { userId, thisYear } = req.query
+    
+    const response = await Status.findOne({
+        userId,
+        year: thisYear
+    })
+    
+    res.json(response)
 }
 
 //User profile or User data being fetch from the data base

@@ -27,9 +27,10 @@ router.post('/payment', protect, userController.paymentData)
 router.post('/paymentstatus', protect, userController.paymentStatus)
 
 // Protected Routes (When client try to access to /home or /dashboard in browse they will redirect to login page)
-router.get('/profile', protect, userController.getUser, (req, res) => {
-    res.json(req.user)
-})
+router.get('/profile', protect, userController.getUser)
+
+// Protected Routes (When client need to check if user have already a status update)
+router.get('/status', protect, userController.getStatus)
 
 // Updating one user
 //router.patch('/:id', userController.updateUser);

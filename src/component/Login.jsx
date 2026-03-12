@@ -71,7 +71,23 @@ function Login() {
             const day = createdAt.getUTCDate()
             console.log(`Year: ${year}, Month: ${createdMonth}, Day:${day}`)
 
-            try {
+            // Current Year
+            const thisYear = new Date().getUTCFullYear()
+            
+
+            //request to check if this user is already have a payment status in the status database collection
+            const existingStatus = await axios.get('http://localhost:3000/users/status', {
+                params:{userId,thisYear},
+                headers:{"Authorization": `Bearer ${token}`}
+            })
+
+            
+            console.log("Dapat data ni sya", existingStatus)
+            if(existingStatus.data){
+                console.log('Do not Create')
+            }else{
+                console.log('Create!!!')
+                try {
                 //Request to Create/POST into the server. userController will handle the request
                 const pay  = await axios.post('http://localhost:3000/users/paymentstatus',{userId, year},{
                     headers:{
@@ -84,6 +100,7 @@ function Login() {
 
             } catch (error) {
                 console.error(error)
+            }
             }
             
             
