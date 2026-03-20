@@ -3,6 +3,9 @@ const router = express.Router();
 const userController = require('../controller/userController');
 const protect = require('../middleware/authMiddleware');
 
+//Paymongo Controller
+const paymongoController = require('../paymongo/paymongoController')
+
 // This file will execute the logic in controller file
 
 // Getting all user
@@ -31,6 +34,12 @@ router.get('/profile', protect, userController.getUser)
 
 // Protected Routes (When client need to check if user have already a status update)
 router.get('/status', protect, userController.getStatus)
+
+// Protected Paymongo Route for Payment Intent
+router.post('/payment_intents', paymongoController.userPayment)
+
+// Protected Paymong Route for verification
+router.get('/payment_verification/:payment_intent_id', paymongoController.paymentVerification)
 
 // Updating one user
 //router.patch('/:id', userController.updateUser);

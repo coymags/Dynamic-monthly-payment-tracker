@@ -30,22 +30,29 @@ function Home({onLogout}) {
                     "Authorization": `Bearer ${token}`
                 }
             })
+            
 
-            //fetch data from database through protected route
-            const reciept = await axios.post('http://localhost:3000/users/payment',{
-                    user: response.data._id,
-                    payment: num,
-                    payDate: new Date()
+            //Paymongo Payment intent (payment request)
+            const checkout_url = await axios.post('http://localhost:3000/users/payment_intents',{
+                userId: response.data._id,
+                monthNumber : 3,
+                amount: num
                 },{
-                headers: {
-                    "Authorization": `Bearer ${token}`
+                    headers:{
+                        "Content-Type": "application/json"
+                    }
                 }
-            })
-            
-            
-            console.log(reciept)
+            )
 
-            console.log(response.data._id)
+            console.log(checkout_url.data)
+            //redirect user to Gcash checkout page
+            const redirectUrl = checkout_url.data.redirect.url
+            window.location.href = redirectUrl
+            
+            
+            
+
+            //console.log(response.data._id)
             alert("payment successful")
             setOpen(!open)
 
@@ -124,7 +131,7 @@ function Home({onLogout}) {
                         <h2 className="text-white text-3xl">Name:{userData.firstname[0].toUpperCase() + userData.firstname.slice(1)}</h2>
                         <h2 className="text-white text-2xl">Address: {userData.address}</h2>
                         <div className="h-15 m-5 flex justify-center items-center">
-                            <button className="w-40 h-9 flex justify-center items-center hover:bg-gray-200 text-2xl" onClick={handleOnClick}>View Contribution</button>
+                            <button className="w-50 h-9 flex justify-center items-center hover:bg-gray-200 text-2xl" onClick={handleOnClick}>View Contribution</button>
                         </div>
                     </div>
                     <div className="h-40 flex flex-row justify-center items-center gap-5 m-3">

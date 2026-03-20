@@ -15,7 +15,12 @@ const paymentStatus = new mongoose.Schema({
     },
     year:{
         type: Number,
-        required: true
+        required: true,
+        unique: true
+    },
+    createdAt:{
+        type: Date,
+        default: Date.now
     },
     months:{
         "1":{type: monthSchema ,default:{}},

@@ -83,13 +83,13 @@ function Login() {
 
             
             console.log("Dapat data ni sya", existingStatus)
+
             if(existingStatus.data){
-                console.log('Do not Create')
+                //This will not create a payment status model
             }else{
-                console.log('Create!!!')
                 try {
                 //Request to Create/POST into the server. userController will handle the request
-                const pay  = await axios.post('http://localhost:3000/users/paymentstatus',{userId, year},{
+                const pay  = await axios.post('http://localhost:3000/users/paymentstatus',{userId, thisYear},{
                     headers:{
                         "Authorization": `Bearer ${token}`
                     }

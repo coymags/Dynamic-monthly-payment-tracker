@@ -1,11 +1,19 @@
+require('dotenv').config()
 const mongoose = require('mongoose')
 const User = require('../models/userSchema')// Schema for database connected to database
 const Plan = require('../models/planSchema')
 const Paid = require('../models/paymentSchema')
 const Status = require('../models/paymentStatusSchema')
 
+
 const bcrypt = require('bcrypt');// Password hashing library
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken'); // JsSOBWEBTOKEN
+
+//Paymongo
+const paymongo = require('../.api/apis/paymongo')
+//Axios
+const axios = require('axios')
+const { redirect } = require('react-router-dom')
 
 /*exports.getOneUser = (req, res) => {
     const userId = req.params.id
@@ -120,11 +128,11 @@ exports.paymentData = async (req, res) => {
 exports.paymentStatus = async (req, res) => {
 
     try {
-        const { userId, year } = req.body
+        const { userId, thisYear } = req.body
 
         const payStatus = await Status.create({
             userId,
-            year
+            year: thisYear
         })
 
         res.status(201).json({
@@ -132,8 +140,6 @@ exports.paymentStatus = async (req, res) => {
             message: "User created successfully",
             data: payStatus
         })
-        console.log(userId)
-        console.log(year)
 
     } catch (error) {
         console.error(error)
@@ -143,7 +149,7 @@ exports.paymentStatus = async (req, res) => {
 //Get status of the user for checking
 exports.getStatus = async (req, res) => {
     const { userId, thisYear } = req.query
-    
+
     const response = await Status.findOne({
         userId,
         year: thisYear
@@ -160,3 +166,4 @@ exports.getUser = async (req, res) => {
 exports.updateUser = (req, res) => {
     console.log('Update User')
 }
+

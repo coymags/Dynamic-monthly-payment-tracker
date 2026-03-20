@@ -6,6 +6,8 @@ import Home from './component/Home'
 import AdminDashboard from './component/AdminDashboard'
 import PrivateRoutes from './privateroute/PrivateRoutes'
 import Contribution from './component/Contribution'
+import Success from './component/Success'
+import Failed from './component/Failed'
 
 function App() {
 
@@ -30,6 +32,8 @@ function App() {
         <Route path='/contribution' element={<PrivateRoutes><Contribution/></PrivateRoutes>}></Route>
         
         <Route path='/register' element={ <Register/>}></Route>
+        <Route path='/success' element={<Success/>}></Route>
+        <Route path='/failed' element={<Failed/>}></Route>
       </Routes> 
     </>
   )

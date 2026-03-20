@@ -5,6 +5,9 @@ import axios from "axios"
 
 function Contribution(){
 
+    // Hook to update button into red ot green when status is updated
+    const [ update, setUpdate] = useState("")
+
     //Navigation function
     const navigate = useNavigate()
     const handleOnClick = () => {
@@ -33,24 +36,59 @@ function Contribution(){
         
         const userData = async () => {
             try {
+                //This response data is comming from user collection
                 const token = localStorage.getItem('token')
                 const response = await axios.get('http://localhost:3000/users/profile',{
                     headers:{
                         "Authorization": `Bearer ${token}`
                     }
                 })
-
+                // Allocate response to data variable
                 setData(response)
+                const thisYear = new Date().getUTCFullYear()
+                const userId = response.data._id
+
+                //console.log(userId)
+                //console.log(year)
+
+                try {
+                    // Getting the payment status from the status collection in database
+                    const paymentStatus = await axios.get('http://localhost:3000/users/status',{
+                        params:{userId, thisYear},
+                        headers: {"Authorization": `Bearer ${token}`}
+                    })
+
+                    console.log(paymentStatus.data.months)
+                    const date = paymentStatus.data.createdAt
+                    const month = new Date(date).getUTCMonth() + 1
+                    
+                    //Condition to verrify which Quarter the user starts to pay
+                    if(month <= 6){
+                        const months = paymentStatus.data.months
+                        console.log('Jan to June bayari')
+                        console.log(paymentStatus.data)
+                        for(let monthNumber in months){
+                            console.log(months[monthNumber].status + `Month:${monthNumber}`)
+                        }
+                        
+                    }else{
+                        console.log('Jul to Dec bayari')
+                    }
+
+                } catch (error) {
+                    console.error(error)
+                }
+
             } catch (error) {
                 console.error(error)
             }
         }
 
         userData()
+        
     },[])
 
-    console.log(data)
-
+    
     return(
         <>
             <div className="w-90 h-screen flex flex-col relative min-h-screen overflow-hidden bg-linear-to-b from-[#031a46] to-[#1e6fd9]">
@@ -65,19 +103,61 @@ function Contribution(){
                         <FaArrowDown size={20} onClick={decrement}/><FaArrowUp size={20} onClick={increment}/>
                     </div>
                 </div>
-                <div className="w-full h-100 grid-cols-4 gap-3 justify-center content-center">
-                    <button type="button" className="m-2">JAN</button>
-                    <button type="button" className="m-2">FEB</button>
-                    <button type="button" className="m-2">MAR</button>
-                    <button type="button" className="m-2">APR</button>
-                    <button type="button" className="m-2">MAY</button>
-                    <button type="button" className="m-2">JUN</button>
-                    <button type="button" className="m-2">JUL</button>
-                    <button type="button" className="m-2">AUG</button>
-                    <button type="button" className="m-2">SEPT</button>
-                    <button type="button" className="m-2">OCT</button>
-                    <button type="button" className="m-2">NOV</button>
-                    <button type="button" className="m-2">DEC</button>
+                <div className="w-full h-140 flex flex-col">
+                    <div className="w-full h-6 flex justify-center items-center">
+                        <h2 className="text-white">1st Quarter</h2>
+                    </div>
+                    <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
+                        <h2 className="text-white text-lg">January</h2>
+                        <button id="1" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                    </div>
+                    <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
+                        <h2 className="text-white text-lg">February</h2>
+                        <button id="2" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                    </div>
+                    <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
+                        <h2 className="text-white text-lg">March</h2>
+                        <button id="3" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                    </div>
+                    <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
+                        <h2 className="text-white text-lg">April</h2>
+                        <button id="4" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                    </div>
+                    <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
+                        <h2 className="text-white text-lg">May</h2>
+                        <button id="5" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                    </div>
+                    <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
+                        <h2 className="text-white text-lg">June</h2>
+                        <button id="6" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                    </div>
+                    <div className="w-full h-6 flex justify-center items-center">
+                        <h2 className="text-white">2nd Quarter</h2>
+                    </div>
+                    <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
+                        <h2 className="text-white text-lg">July</h2>
+                        <button id="7" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                    </div>
+                    <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
+                        <h2 className="text-white text-lg">August</h2>
+                        <button id="8" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                    </div>
+                    <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
+                        <h2 className="text-white text-lg">September</h2>
+                        <button id="9" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                    </div>
+                    <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
+                        <h2 className="text-white text-lg">October</h2>
+                        <button id="10" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                    </div>
+                    <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
+                        <h2 className="text-white text-lg">November</h2>
+                        <button id="11" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                    </div>
+                    <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
+                        <h2 className="text-white text-lg">December</h2>
+                        <button id="12" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                    </div>
                 </div>
             </div>
         </>
