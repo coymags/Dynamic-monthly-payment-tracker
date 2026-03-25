@@ -29,6 +29,9 @@ router.post('/payment', protect, userController.paymentData)
 //Protected Routes for Payment Status
 router.post('/paymentstatus', protect, userController.paymentStatus)
 
+//Proted Routes for latest Payment reciept
+router.get('/latest_payment', protect, userController.latestPayment)
+
 // Protected Routes (When client try to access to /home or /dashboard in browse they will redirect to login page)
 router.get('/profile', protect, userController.getUser)
 

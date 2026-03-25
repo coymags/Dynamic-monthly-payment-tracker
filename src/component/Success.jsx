@@ -37,6 +37,10 @@ function Success() {
 
             console.log(response)
 
+            if(!response.data){
+                return <p>Loading.....Please wait</p>
+            }
+
             if(response.data ==="succeeded"){
                 setStatus(true)
             }

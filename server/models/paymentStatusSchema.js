@@ -15,8 +15,7 @@ const paymentStatus = new mongoose.Schema({
     },
     year:{
         type: Number,
-        required: true,
-        unique: true
+        required: true
     },
     createdAt:{
         type: Date,

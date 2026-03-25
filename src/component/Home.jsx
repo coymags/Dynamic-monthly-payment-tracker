@@ -35,7 +35,7 @@ function Home({onLogout}) {
             //Paymongo Payment intent (payment request)
             const checkout_url = await axios.post('http://localhost:3000/users/payment_intents',{
                 userId: response.data._id,
-                monthNumber : 3,
+                monthNumber : 3, //Change this monthNumber in to dynamic
                 amount: num
                 },{
                     headers:{
@@ -47,11 +47,20 @@ function Home({onLogout}) {
             console.log(checkout_url.data)
             //redirect user to Gcash checkout page
             const redirectUrl = checkout_url.data.redirect.url
-            window.location.href = redirectUrl
+            //window.location.href = redirectUrl
             
-            
-            
+            //User Payment for the database
+            const userPayment = await axios.post('http://localhost:3000/users/payment',{
+                    user: response.data._id,
+                    payment: num
+                },{
+                    headers:{
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
+            )
 
+            
             //console.log(response.data._id)
             alert("payment successful")
             setOpen(!open)

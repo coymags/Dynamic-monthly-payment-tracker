@@ -1,6 +1,6 @@
 import { FaTimes, FaArrowUp, FaArrowDown } from "react-icons/fa"
 import { useNavigate } from "react-router-dom"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import axios from "axios"
 
 function Contribution(){
@@ -32,9 +32,17 @@ function Contribution(){
         setYear(prevYear => prevYear - 1)
     }
 
+    //Use effect must run only once, So useRef is to insure that useEffect already run once
+    const runAlready = useRef(false)
+
     useEffect(() => {
+
+        if(runAlready.current){
+                return
+        }
         
         const userData = async () => {
+
             try {
                 //This response data is comming from user collection
                 const token = localStorage.getItem('token')
@@ -43,6 +51,8 @@ function Contribution(){
                         "Authorization": `Bearer ${token}`
                     }
                 })
+
+                console.log(`Mao ni reponse s getUser`, response)
                 // Allocate response to data variable
                 setData(response)
                 const thisYear = new Date().getUTCFullYear()
@@ -52,28 +62,27 @@ function Contribution(){
                 //console.log(year)
 
                 try {
+                    //-------------------------------------------------------------------------------------
                     // Getting the payment status from the status collection in database
                     const paymentStatus = await axios.get('http://localhost:3000/users/status',{
-                        params:{userId, thisYear},
-                        headers: {"Authorization": `Bearer ${token}`}
+                        headers: {"Authorization": `Bearer ${token}`},
+                        params:{userId, thisYear}    
                     })
 
-                    console.log(paymentStatus.data.months)
+                    //console.log(paymentStatus.data.months)
                     const date = paymentStatus.data.createdAt
-                    const month = new Date(date).getUTCMonth() + 1
-                    
-                    //Condition to verrify which Quarter the user starts to pay
-                    if(month <= 6){
-                        const months = paymentStatus.data.months
-                        console.log('Jan to June bayari')
-                        console.log(paymentStatus.data)
-                        for(let monthNumber in months){
-                            console.log(months[monthNumber].status + `Month:${monthNumber}`)
+                    const month = 7
+                    //const month = new Date(date).getUTCMonth() + 1
+
+
+                    //----------------------------------------------------------------------------------------
+                    //Get User latest payment Reciept from "paids" in database
+                    const latestPayment = await axios.get('http://localhost:3000/users/latest_payment',{
+                            params:{userId, thisYear, date}, headers:{"Authorization": `Bearer ${token}`}
                         }
-                        
-                    }else{
-                        console.log('Jul to Dec bayari')
-                    }
+                    )
+                    
+                    console.log("latest payment ni nga data:", latestPayment)
 
                 } catch (error) {
                     console.error(error)
@@ -86,6 +95,8 @@ function Contribution(){
 
         userData()
         
+        runAlready.current = true
+
     },[])
 
     
