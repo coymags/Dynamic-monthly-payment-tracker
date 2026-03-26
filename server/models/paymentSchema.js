@@ -15,6 +15,10 @@ const paymentSchema = new mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now
+    },
+    processed:{
+        type: Boolean,
+        default: false
     }
 })
 

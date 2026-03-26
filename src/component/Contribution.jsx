@@ -6,7 +6,7 @@ import axios from "axios"
 function Contribution(){
 
     // Hook to update button into red ot green when status is updated
-    const [ update, setUpdate] = useState("")
+    const [ update, setUpdate] = useState({})
 
     //Navigation function
     const navigate = useNavigate()
@@ -52,7 +52,7 @@ function Contribution(){
                     }
                 })
 
-                console.log(`Mao ni reponse s getUser`, response)
+                //console.log(`Mao ni reponse s getUser`, response)
                 // Allocate response to data variable
                 setData(response)
                 const thisYear = new Date().getUTCFullYear()
@@ -71,18 +71,18 @@ function Contribution(){
 
                     //console.log(paymentStatus.data.months)
                     const date = paymentStatus.data.createdAt
-                    const month = 7
-                    //const month = new Date(date).getUTCMonth() + 1
-
-
+                    
                     //----------------------------------------------------------------------------------------
                     //Get User latest payment Reciept from "paids" in database
                     const latestPayment = await axios.get('http://localhost:3000/users/latest_payment',{
                             params:{userId, thisYear, date}, headers:{"Authorization": `Bearer ${token}`}
                         }
                     )
+
+                    console.log("Response sa Status sa mga bulan", latestPayment)
                     
-                    console.log("latest payment ni nga data:", latestPayment)
+                    //Hook to update the buttons
+                    setUpdate(latestPayment.data.months)
 
                 } catch (error) {
                     console.error(error)
@@ -120,54 +120,54 @@ function Contribution(){
                     </div>
                     <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
                         <h2 className="text-white text-lg">January</h2>
-                        <button id="1" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                        <button id="1" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update[1]?.status == "paid"? "text-green-400": "text-red-400"}`}>{update[1]?.status}</button>
                     </div>
                     <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
                         <h2 className="text-white text-lg">February</h2>
-                        <button id="2" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                        <button id="2" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update[2]?.status == "paid"? "text-green-400": "text-red-400"}`}>{update[2]?.status}</button>
                     </div>
                     <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
                         <h2 className="text-white text-lg">March</h2>
-                        <button id="3" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                        <button id="3" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update[3]?.status == "paid"? "text-green-400": "text-red-400"}`}>{update[3]?.status}</button>
                     </div>
                     <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
                         <h2 className="text-white text-lg">April</h2>
-                        <button id="4" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                        <button id="4" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update[4]?.status == "paid"? "text-green-400": "text-red-400"}`}>{update[4]?.status}</button>
                     </div>
                     <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
                         <h2 className="text-white text-lg">May</h2>
-                        <button id="5" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                        <button id="5" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update[5]?.status == "paid"? "text-green-400": "text-red-400"}`}>{update[5]?.status}</button>
                     </div>
                     <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
                         <h2 className="text-white text-lg">June</h2>
-                        <button id="6" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                        <button id="6" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update[6]?.status == "paid"? "text-green-400": "text-red-400"}`}>{update[6]?.status}</button>
                     </div>
                     <div className="w-full h-6 flex justify-center items-center">
                         <h2 className="text-white">2nd Quarter</h2>
                     </div>
                     <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
                         <h2 className="text-white text-lg">July</h2>
-                        <button id="7" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                        <button id="7" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update[7]?.status == "paid"? "text-green-400": "text-red-400"}`}>{update[7]?.status}</button>
                     </div>
                     <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
                         <h2 className="text-white text-lg">August</h2>
-                        <button id="8" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                        <button id="8" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update[8]?.status == "paid"? "text-green-400": "text-red-400"}`}>{update[8]?.status}</button>
                     </div>
                     <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
                         <h2 className="text-white text-lg">September</h2>
-                        <button id="9" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                        <button id="9" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update[9]?.status == "paid"? "text-green-400": "text-red-400"}`}>{update[9]?.status}</button>
                     </div>
                     <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
                         <h2 className="text-white text-lg">October</h2>
-                        <button id="10" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                        <button id="10" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update[10]?.status == "paid"? "text-green-400": "text-red-400"}`}>{update[10]?.status}</button>
                     </div>
                     <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
                         <h2 className="text-white text-lg">November</h2>
-                        <button id="11" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                        <button id="11" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update[11]?.status == "paid"? "text-green-400": "text-red-400"}`}>{update[11]?.status}</button>
                     </div>
                     <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
                         <h2 className="text-white text-lg">December</h2>
-                        <button id="12" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update == "paid"? "text-green-400": "text-red-400"}`}>{update}</button>
+                        <button id="12" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update[12]?.status == "paid"? "text-green-400": "text-red-400"}`}>{update[12]?.status}</button>
                     </div>
                 </div>
             </div>

@@ -31,11 +31,13 @@ function Home({onLogout}) {
                 }
             })
             
+            const now = new Date()
+            const currentMonth = now.getUTCMonth()
 
             //Paymongo Payment intent (payment request)
             const checkout_url = await axios.post('http://localhost:3000/users/payment_intents',{
                 userId: response.data._id,
-                monthNumber : 3, //Change this monthNumber in to dynamic
+                monthNumber : currentMonth, //Change this monthNumber in to dynamic
                 amount: num
                 },{
                     headers:{
@@ -44,10 +46,11 @@ function Home({onLogout}) {
                 }
             )
 
-            console.log(checkout_url.data)
+            //console.log(checkout_url.data)
+
             //redirect user to Gcash checkout page
             const redirectUrl = checkout_url.data.redirect.url
-            //window.location.href = redirectUrl
+            window.location.href = redirectUrl
             
             //User Payment for the database
             const userPayment = await axios.post('http://localhost:3000/users/payment',{
@@ -73,7 +76,7 @@ function Home({onLogout}) {
     //Onchange in payment input
     const handleOnchange = (e) => {
         setNum(e.target.value)
-        console.log(num)
+        //console.log(num)
     }
 
 
@@ -113,7 +116,8 @@ function Home({onLogout}) {
 
 
                 const userInfo = await user.json()
-                console.log(userInfo.firstname)
+                
+                //console.log(userInfo.firstname)
                 setUserData(userInfo)
                 
                 

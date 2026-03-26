@@ -89,19 +89,9 @@ exports.createUser = async (req, res) => {
             password: hashPassword
         })
             
-        const plan = await Plan.create({
-            user: userInfo._id,
-            monthlyPrice: 100,
-            startDate: new Date()
-        })
-
-        
-        //user: {email, username}
-            
         res.status(201).json({message: 'User registered succesfully', user :{ email, username }})
         
     }catch(err){
-        console.log(err)
         res.status(500).json({message: 'Server error'})
     }
 };
@@ -126,20 +116,33 @@ exports.paymentData = async (req, res) => {
 
 // Payment reciept GET request from the user Update what quarter, first year and update database
 exports.latestPayment = async (req, res) => {
+
     try {
-        console.log("useEffect runs @", new Date())
-        const {userId, thisYear, date} = req.query
         
-        const latestPayment = await Paid.findOne({user: userId}).sort({ payDate: -1}) 
+        const {userId, thisYear, date} = req.query
 
-        res.json(latestPayment)
+        //Getting  the User DATA from the STATUS Collection in the database USING the userdata comming from the usercollection being send from the frontend /profile
+        const paymentUpdate = await Status.findOne({
+                userId: userId,
+                year: thisYear
+            }
+        )
+        
+        const latestPayment = await Paid.findOne({user: userId, processed: false}).sort({ payDate: -1})
+        
+        if(!latestPayment){
+            console.log("Nothing to process")
+            res.json(paymentUpdate)
+            return
+        }
 
+        console.log("Something to process has an false reciept from the paid collection")
         //Payment amount also the paidDate
         const paidDate = latestPayment.payDate
         const amount = latestPayment.payment
         //Extract payDate in Day, Month, Year
         const dateObj = new Date(latestPayment.payDate)
-        const paymentDat = dateObj.getUTCDay()
+        const paymentDate = dateObj.getUTCDay()
         const paymentMonth = dateObj.getUTCMonth() + 1
         const paymentYear = dateObj.getUTCFullYear()
 
@@ -150,47 +153,78 @@ exports.latestPayment = async (req, res) => {
         const firstLoginYear = firstLogin.getUTCFullYear()
 
         try {
+            //Divide amount into how many months it will cover(The answer will be How many months will update)
+            let dividedAmount = amount / 100
+            let firstQuarterMonthUpdated = 1
 
-            //This is only to update 1 month for 100pesos
-            //The final is divide payment into months. Ex: 500pesos payment will update 5 months including previos unpaid months
-            const paymentUpdate = await Status.findOne({
-                    userId: userId,
-                    year: thisYear
-                }
-            )
-            
-            
-            if(firstLoginYear == thisYear && 8 >= 7){
+            //This Condition will choose wither its 1st quarter or second quarter
+            //If Second Quarter the firstLoginMonth variable starts at 7 months which is JULY of the Year user Start to Login
+            if(firstLoginYear == thisYear && firstLoginMonth >= 7){
 
-                //Divide amount into how many months it will cover(The answer will be How many months will update)
-                let dividedAmount = amount / 100
-                let monthUpdated = 0
+                let secondQuarterMonthUpdated = 0
 
-                //This loop start fron 7 to 12. It is the second quarter of the year
-                for(let i = 7;i <= 12; i++){
+                if(latestPayment.processed === false){
+                    console.log("Naa ta sa false 2nd Quarter sa tuig na condition(Gamiton pa ang resibo) ")
+                    //This loop start fron 7 to 12. It is the second quarter of the year(If latest payment is false not processed yet)
+                    for(let i = 7;i <= 12; i++){
 
-                    // Condition to stop the loop when the dividedAmount reach zero. 
-                    if(monthUpdated >= dividedAmount){
-                        break
+                        // Condition to stop the loop when the dividedAmount reach zero. 
+                        if(secondQuarterMonthUpdated >= dividedAmount){
+                            break
+                        }
+
+                        // Condition to catch all the unpaid months
+                        if(paymentUpdate.months[i].status === 'unpaid'){
+                            
+                            paymentUpdate.months[i].status = 'paid'
+                            paymentUpdate.months[i].amount = 100
+                            paymentUpdate.months[i].paidDate = new Date()
+                            
+                        
+                            secondQuarterMonthUpdated++
+                        }
                     }
 
-                    // Condition to catch all the unpaid months
-                    if(paymentUpdate.months[i].status === 'unpaid'){
-                        
-                        paymentUpdate.months[i].status = 'paid'
-                        paymentUpdate.months[i].amount = 100
-                        paymentUpdate.months[i].paidDate = new Date()
-                        
-                        
-                        monthUpdated++
-                    }
+                    //UPDATE! && SAVE!! Database .processed into true(It means that the reciept was used)
+                    latestPayment.processed = true
+                    await latestPayment.save()
+                    await paymentUpdate.save()
+
+                    res.json(paymentUpdate)
 
                 }
-
-                await paymentUpdate.save()
-
+            //This Code will execute When the User Login in the 1st Quarter of the Month
             }else{
-                console.log("Diri tibuok tuig na bayaran")
+                if(latestPayment.processed === false){
+                    console.log("1st Quarter sa tuig dayon naay resibo na gamiton")
+                    for(let i = 1; i <= 12; i++){
+                        console.log(dividedAmount)
+                        //dividedAmount is users payment 200/100 = 2
+                        if(firstQuarterMonthUpdated > dividedAmount){
+                            break
+                        }
+                        
+                        if(paymentUpdate.months[i].status == 'paid'){
+
+                            paymentUpdate.months[i].status = 'unpaid'
+                            paymentUpdate.months[i].amount = 0
+                            paymentUpdate.months[i].paidDate = new Date()
+                            
+                            firstQuarterMonthUpdated++
+                            
+                        }
+                        console.log("Pila ka loop tanan")
+                        
+                    }
+
+                    //UPDATE! && SAVE! Database .processed into true(It means that the reciept was used)
+                    latestPayment.processed = true
+                    await latestPayment.save()
+                    await paymentUpdate.save()
+
+                    res.json(paymentUpdate)
+                }
+                
             }
             
             

@@ -38,7 +38,7 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
-            // This data came from the server
+            // This data goes to the server
             const toLogin = await axios.post('http://localhost:3000/users/login', info);            
             
             // Storing token to localstorage, token is from response in userLogin in userController.js
@@ -69,7 +69,7 @@ function Login() {
             const year = createdAt.getUTCFullYear()
             const createdMonth = createdAt.getUTCMonth() + 1
             const day = createdAt.getUTCDate()
-            console.log(`Year: ${year}, Month: ${createdMonth}, Day:${day}`)
+            //console.log(`Year: ${year}, Month: ${createdMonth}, Day:${day}`)
 
             // Current Year
             const thisYear = new Date().getUTCFullYear()
@@ -81,9 +81,6 @@ function Login() {
                 headers:{"Authorization": `Bearer ${token}`}
             })
 
-            
-            console.log("Dapat data ni sya", existingStatus)
-
             if(existingStatus.data){
                 //This will not create a payment status model
             }else{
@@ -94,9 +91,8 @@ function Login() {
                         "Authorization": `Bearer ${token}`
                     }
                 })
-
-                console.log("Compare user req:", userId)
-                console.log(pay)
+                
+                //console.log(pay)
 
             } catch (error) {
                 console.error(error)
@@ -106,7 +102,7 @@ function Login() {
             
         }catch(err){
             
-            console.log(err.response.data.message)
+            //console.log(err.response.data.message)
 
             if(err.response.data.message == 'Wrong username'){
                 alert('Wrong username')
