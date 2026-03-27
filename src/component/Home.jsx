@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Contribution from "./Contribution";
 import { useNavigate } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 
 
+
 // This onLogout arguements is a prop from app.jsx file 
 function Home({onLogout}) {
+
 
     // useState to handle data from the database
     const [ userData, setUserData ] = useState(null)

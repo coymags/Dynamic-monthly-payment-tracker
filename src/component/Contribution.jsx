@@ -7,13 +7,16 @@ function Contribution(){
 
     // Hook to update button into red ot green when status is updated
     const [ update, setUpdate] = useState({})
+    const [userUsage, setUserusage] = useState()
+
+    //LocalStorage token
+    const token = localStorage.getItem('token')
 
     //Navigation function
     const navigate = useNavigate()
     const handleOnClick = () => {
         navigate('/home')
     }
-
     //Year handler 
     const [ year, setYear ] = useState(new Date().getFullYear())
     const [data, setData] = useState(null)
@@ -23,13 +26,33 @@ function Contribution(){
         setYear(Number(e.target.value))
         console.log(e.target.value)
     }
+    
+    
+    //Function to GET data from status collection by year created
+    const thisYearStatus = async (year) => {
+        const yearlyStatus = await axios.get('http://localhost:3000/users/status',{
+            headers:{"Authorization": `Bearer ${token}`},
+            params: {userId: userUsage, thisYear: year}
+        })
+        console.log(userUsage, year)
+        return yearlyStatus
+    }
+
     //Arrow up function
-    const increment = () => {
-        setYear(prevYear => prevYear + 1)
+    const increment = async () => {
+        const nextYear = year + 1
+        setYear(nextYear)
+        const thisdata = await thisYearStatus(nextYear)
+        setUpdate(thisdata.data.months)
+        console.log(thisdata.data.months)
     }
     //Arrow down function
-    const decrement = () => {
-        setYear(prevYear => prevYear - 1)
+    const decrement = async () => {
+        const prevYear = year - 1
+        setYear(prevYear)
+        const thisdata = await thisYearStatus(prevYear)
+        setUpdate(thisdata.data.months)
+        console.log(thisdata.data.months)
     }
 
     //Use effect must run only once, So useRef is to insure that useEffect already run once
@@ -51,13 +74,13 @@ function Contribution(){
                         "Authorization": `Bearer ${token}`
                     }
                 })
-
+                
                 //console.log(`Mao ni reponse s getUser`, response)
                 // Allocate response to data variable
                 setData(response)
                 const thisYear = new Date().getUTCFullYear()
                 const userId = response.data._id
-
+                setUserusage(userId)
                 //console.log(userId)
                 //console.log(year)
 

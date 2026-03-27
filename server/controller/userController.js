@@ -268,7 +268,6 @@ exports.getStatus = async (req, res) => {
         userId,
         year: thisYear
     })
-    
     res.json(response)
 }
 
