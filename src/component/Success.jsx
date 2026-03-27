@@ -35,7 +35,7 @@ function Success() {
                 }
             })
 
-            console.log(response)
+            //console.log(response)
 
             if(!response.data){
                 return <p>Loading.....Please wait</p>

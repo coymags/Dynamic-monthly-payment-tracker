@@ -142,8 +142,8 @@ function Home({onLogout}) {
             <div className="w-90 h-screen flex flex-col justify-center relative min-h-screen overflow-hidden bg-linear-to-b from-[#031a46] to-[#1e6fd9]">
                 <div className="h-130 flex flex-col justify-center ">
                     <div className="m-3">
-                        <h2 className="text-white text-3xl">Name:{userData.firstname[0].toUpperCase() + userData.firstname.slice(1)}</h2>
-                        <h2 className="text-white text-2xl">Address: {userData.address}</h2>
+                        <h2 className="text-white text-3xl">Name: {userData.firstname[0].toUpperCase() + userData.firstname.slice(1)}</h2>
+                        <h2 className="text-white text-2xl">Address: {userData.address[0].toUpperCase() + userData.address.slice(1)}</h2>
                         <div className="h-15 m-5 flex justify-center items-center">
                             <button className="w-50 h-9 flex justify-center items-center hover:bg-gray-200 text-2xl" onClick={handleOnClick}>View Contribution</button>
                         </div>

@@ -38,7 +38,7 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
-            // This data goes to the server
+            // This data go to server @ /login endpoint
             const toLogin = await axios.post('http://localhost:3000/users/login', info);            
             
             // Storing token to localstorage, token is from response in userLogin in userController.js

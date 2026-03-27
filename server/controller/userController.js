@@ -101,7 +101,7 @@ exports.paymentData = async (req, res) => {
     try {
 
         const {user, payment} = req.body
-        console.log("payment data ni sya ", user, payment)
+        //console.log("payment data ni sya ", user, payment)
         const userPaid = await Paid.create({
             user,
             payment
@@ -136,7 +136,7 @@ exports.latestPayment = async (req, res) => {
             return
         }
 
-        console.log("Something to process has an false reciept from the paid collection")
+        //console.log("Something to process has an false reciept from the paid collection")
         //Payment amount also the paidDate
         const paidDate = latestPayment.payDate
         const amount = latestPayment.payment
@@ -164,7 +164,7 @@ exports.latestPayment = async (req, res) => {
                 let secondQuarterMonthUpdated = 0
 
                 if(latestPayment.processed === false){
-                    console.log("Naa ta sa false 2nd Quarter sa tuig na condition(Gamiton pa ang resibo) ")
+                    //console.log("Naa ta sa false 2nd Quarter sa tuig na condition(Gamiton pa ang resibo) ")
                     //This loop start fron 7 to 12. It is the second quarter of the year(If latest payment is false not processed yet)
                     for(let i = 7;i <= 12; i++){
 
@@ -196,24 +196,24 @@ exports.latestPayment = async (req, res) => {
             //This Code will execute When the User Login in the 1st Quarter of the Month
             }else{
                 if(latestPayment.processed === false){
-                    console.log("1st Quarter sa tuig dayon naay resibo na gamiton")
+                    //console.log("1st Quarter sa tuig dayon naay resibo na gamiton")
                     for(let i = 1; i <= 12; i++){
-                        console.log(dividedAmount)
+                        //console.log(dividedAmount)
                         //dividedAmount is users payment 200/100 = 2
                         if(firstQuarterMonthUpdated > dividedAmount){
                             break
                         }
                         
-                        if(paymentUpdate.months[i].status == 'paid'){
+                        if(paymentUpdate.months[i].status == 'unpaid'){
 
-                            paymentUpdate.months[i].status = 'unpaid'
-                            paymentUpdate.months[i].amount = 0
+                            paymentUpdate.months[i].status = 'paid'
+                            paymentUpdate.months[i].amount = 100
                             paymentUpdate.months[i].paidDate = new Date()
                             
                             firstQuarterMonthUpdated++
                             
                         }
-                        console.log("Pila ka loop tanan")
+                        //console.log("Pila ka loop tanan")
                         
                     }
 

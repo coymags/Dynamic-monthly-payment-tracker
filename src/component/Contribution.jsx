@@ -24,7 +24,7 @@ function Contribution(){
     //Change value of the year
     const handleOnchange = (e) => {
         setYear(Number(e.target.value))
-        console.log(e.target.value)
+        
     }
     
     
@@ -34,7 +34,7 @@ function Contribution(){
             headers:{"Authorization": `Bearer ${token}`},
             params: {userId: userUsage, thisYear: year}
         })
-        console.log(userUsage, year)
+        
         return yearlyStatus
     }
 
@@ -44,7 +44,7 @@ function Contribution(){
         setYear(nextYear)
         const thisdata = await thisYearStatus(nextYear)
         setUpdate(thisdata.data.months)
-        console.log(thisdata.data.months)
+        
     }
     //Arrow down function
     const decrement = async () => {
@@ -52,7 +52,7 @@ function Contribution(){
         setYear(prevYear)
         const thisdata = await thisYearStatus(prevYear)
         setUpdate(thisdata.data.months)
-        console.log(thisdata.data.months)
+        
     }
 
     //Use effect must run only once, So useRef is to insure that useEffect already run once
@@ -102,7 +102,7 @@ function Contribution(){
                         }
                     )
 
-                    console.log("Response sa Status sa mga bulan", latestPayment)
+                    //console.log("Response sa Status sa mga bulan", latestPayment)
                     
                     //Hook to update the buttons
                     setUpdate(latestPayment.data.months)

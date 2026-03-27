@@ -15,8 +15,7 @@ function App() {
   const navigate = useNavigate();
   
   function handleLogout() {
-    console.log('gikan pani sa app.jsx na file gipasa')
-
+    //console.log('gikan pani sa app.jsx na file gipasa')
     // When user logout He will navigate to Login page
     navigate('/')
   }
