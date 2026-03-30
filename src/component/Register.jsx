@@ -79,27 +79,27 @@ function Register() {
 
     return(
         <>
-            <div className="w-90 h-screen flex flex-col justify-center relative min-h-screen overflow-hidden bg-linear-to-b from-[#031a46] to-[#1e6fd9]">
-                <div className="w-screen h-15 flex flex-row justify-end items-center gap-4 p-3">
+            <div className="w-full h-screen flex flex-col justify-center relative min-h-screen overflow-hidden bg-linear-to-b from-[#031a46] to-[#1e6fd9] sm:w-full lg:justify-center lg:items-center lg:w-full lg:h-screen md:w-full">
+                <div className="w-screen h-15 flex flex-row justify-end items-center gap-4 p-3 lg:justify-center md:justify-center lg:text-2xl md:text-2xl">
                     <h3 className="text-amber-500" onClick={handleNavigate}>Sign in</h3>
                     <h3 className="text-blue-600" >Sign up</h3>
                 </div>
-                <div className="h-130 p-5">
+                <div className="h-130 p-5 lg:w-200 lg:flex lg:justify-center">
                     <form className=" h-full " onSubmit={handleSubmit}>
-                        <div className="text-white">
+                        <div className="text-white lg:text-2xl md:text-2xl">
                             <input type="text" name="firstname" placeholder="Firstname" onChange={handleOnchange} className="w-full border-b-2 border-gray-400 bg-transparent outline-none focus:border-blue-500 py-2"/>
                             <input type="text" name="lastname" placeholder="Lastname" onChange={handleOnchange} className="w-full border-b-2 border-gray-400 bg-transparent outline-none focus:border-blue-500 py-2"/>
                             <input type="text" name="address" placeholder="Address" onChange={handleOnchange} className="w-full border-b-2 border-gray-400 bg-transparent outline-none focus:border-blue-500 py-2"/>
                             <input type="date" name="birthday" placeholder="mm/dd/yyyy" onChange={handleOnchange} className="w-full border-b-2 border-gray-400 bg-transparent outline-none focus:border-blue-500 py-2"/>
                             <input type="text" name="age" placeholder="Age" onChange={handleOnchange} className="w-full border-b-2 border-gray-400 bg-transparent outline-none focus:border-blue-500 py-2"/>
                         </div>
-                        <div className="text-white">
+                        <div className="text-white lg:text-2xl md:text-2xl">
                             <input className={errToggle ? "w-full border-b-2 border-red-400 bg-transparent outline-none focus:border-blue-500 py-2":"w-full border-b-2 border-gray-400 bg-transparent outline-none focus:border-blue-500 py-2"} placeholder="Email" type="text" id="email" autoComplete="email" name="email" onChange={handleOnchange}/>
                         </div>
-                        <div className="text-white">
+                        <div className="text-white lg:text-2xl md:text-2xl">
                             <input className="w-full border-b-2 border-gray-400 bg-transparent outline-none focus:border-blue-500 py-2" placeholder="Username" type="text" id="username" autoComplete="username" name="username" onChange={handleOnchange} />
                         </div>
-                        <div className="flex fle-row justify-center items-center text-white">
+                        <div className="flex fle-row justify-center items-center text-white lg:text-2xl md:text-2xl">
                             <input className="w-full border-b-2 border-gray-400 bg-transparent outline-none focus:border-blue-500 py-2" placeholder="Password"  type={eyeToggle ? "text":"password"} id="password" name="password" onChange={handleOnchange}/>
                             < FaEye size={15} onClick={handleEye}/>
                         </div>

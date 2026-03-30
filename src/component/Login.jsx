@@ -74,6 +74,7 @@ function Login() {
             // Current Year
             const thisYear = new Date().getUTCFullYear()
             
+            
 
             //request to check if this user is already have a payment status in the status database collection
             const existingStatus = await axios.get('http://localhost:3000/users/status', {
@@ -127,17 +128,17 @@ function Login() {
 
     return(
         <>
-            <div className="w-90 h-screen relative flex flex-col justify-center items-center min-h-screen overflow-hidden bg-linear-to-b from-[#031a46] to-[#1e6fd9]">
-                <div className="w-screen h-15 flex flex-row justify-end items-center gap-4 p-3">
+            <div className="sm:w-full h-screen relative flex flex-col justify-center items-center min-h-screen overflow-hidden bg-linear-to-b from-[#031a46] to-[#1e6fd9] lg:w-full lg:h-screen md:w-full">
+                <div className="w-screen h-15 flex flex-row justify-end items-center gap-4 p-3 lg:justify-center lg:text-2xl md:justify-center md:text-2xl">
                     <h3 className="text-amber-500">Sign in</h3>
                     <h3 className="text-blue-600" onClick={handleNavigate}>Sign up</h3>
                 </div>
-                <div className="h-130 ">
+                <div className="h-130 lg:w-80 md:w-80">
                     <form className=" h-full" onSubmit={handleSubmit}>
-                        <div className="text-white">
+                        <div className="text-white lg:text-2xl md:text-2xl">
                             <input className={ userSetter ? "w-full border-b-2 border-red-400 bg-transparent outline-none focus:border-blue-500 py-2" : "w-full border-b-2 border-gray-400 bg-transparent outline-none focus:border-blue-500 py-2" } placeholder="Username" type="text" id="username" autoComplete="username" name="username" onChange={handleOnchange} />
                         </div>
-                        <div className="flex fle-row justify-center items-center text-white">
+                        <div className="flex fle-row justify-center items-center text-white lg:text-2xl md:text-2xl">
                             <input className={ passSetter ? "w-full border-b-2 border-red-400 bg-transparent outline-none focus:border-blue-500 py-2" : "w-full border-b-2 border-gray-400 bg-transparent outline-none focus:border-blue-500 py-2" } placeholder="Password"  type={eyeToggle ? "password" : "text"} id="password" name="password" onChange={handleOnchange}/>
                             < FaEye size={15} onClick={handleEye}/>
                         </div>
@@ -145,7 +146,7 @@ function Login() {
                             <button  type="submit" className="w-40 h-9 flex justify-center items-center hover:bg-gray-200" >Submit</button>
                         </div>
                         <div className="flex justify-center items-center">
-                            <span onClick={handleNavigate} className="text-white">Register here</span>
+                            <span onClick={handleNavigate} className="text-white lg:text-2xl md:text-2xl">Register here</span>
                         </div>
                     </form>
                 </div>

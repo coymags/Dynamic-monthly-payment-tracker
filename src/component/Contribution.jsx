@@ -125,8 +125,8 @@ function Contribution(){
     
     return(
         <>
-            <div className="w-90 h-screen flex flex-col relative min-h-screen overflow-hidden bg-linear-to-b from-[#031a46] to-[#1e6fd9]">
-                <div className="w-full h-30 flex flex-row justify-between items-center p-5">
+            <div className="w-screen h-screen flex flex-col relative min-h-screen overflow-hidden bg-linear-to-b from-[#031a46] to-[#1e6fd9] sm:items-center sm:justify-center lg:w-screen lg:justify-center lg:items-center md:w-screen md:justify-center">
+                <div className="w-full h-30 flex flex-row justify-between items-center p-5 lg:w-250 md:w-250">
                     <h2 className="text-white">Contribution</h2>
                     <FaTimes size={20} onClick={handleOnClick} className="bg-white rounded-lg"/>
                 </div>
@@ -137,7 +137,7 @@ function Contribution(){
                         <FaArrowDown size={20} onClick={decrement}/><FaArrowUp size={20} onClick={increment}/>
                     </div>
                 </div>
-                <div className="w-full h-140 flex flex-col">
+                <div className="w-full h-140 flex flex-col lg:w-300 md:w-300">
                     <div className="w-full h-6 flex justify-center items-center">
                         <h2 className="text-white">1st Quarter</h2>
                     </div>

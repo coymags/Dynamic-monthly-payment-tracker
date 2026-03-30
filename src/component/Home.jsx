@@ -139,7 +139,7 @@ function Home({onLogout}) {
 
     return(
         <>
-            <div className="w-90 h-screen flex flex-col justify-center relative min-h-screen overflow-hidden bg-linear-to-b from-[#031a46] to-[#1e6fd9]">
+            <div className="w-screen h-screen flex flex-col justify-center items-center relative min-h-screen overflow-hidden bg-linear-to-b from-[#031a46] to-[#1e6fd9]">
                 <div className="h-130 flex flex-col justify-center ">
                     <div className="m-3">
                         <h2 className="text-white text-3xl">Name: {userData.firstname[0].toUpperCase() + userData.firstname.slice(1)}</h2>
