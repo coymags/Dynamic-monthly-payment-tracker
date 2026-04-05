@@ -107,7 +107,7 @@ function Register() {
                             <button  type="submit" onClick={handleSubmit} className="w-40 h-9 flex justify-center items-center hover:bg-gray-200" >Submit</button>
                         </div>
                         <div className="flex justify-center items-center">
-                            <span onClick={handleNavigate} className="text-white">I'm already a member</span>
+                            <span onClick={handleNavigate} className="text-white underline">I'm already a member</span>
                         </div>
                     </form>
                 </div>

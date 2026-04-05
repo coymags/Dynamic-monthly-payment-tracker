@@ -44,6 +44,9 @@ router.post('/payment_intents', paymongoController.userPayment)
 // Protected Paymong Route for verification
 router.get('/payment_verification/:payment_intent_id', paymongoController.paymentVerification)
 
+// Protected Route for Getting all payment reciept total
+router.get('/reciept', protect, userController.reciept)
+
 // Updating one user
 //router.patch('/:id', userController.updateUser);
 

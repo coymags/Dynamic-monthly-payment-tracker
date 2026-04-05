@@ -131,7 +131,8 @@ exports.latestPayment = async (req, res) => {
         const latestPayment = await Paid.findOne({user: userId, processed: false}).sort({ payDate: -1})
         
         if(!latestPayment){
-            console.log("Nothing to process")
+
+            //console.log("Nothing to process")
             res.json(paymentUpdate)
             return
         }
@@ -253,6 +254,25 @@ exports.paymentStatus = async (req, res) => {
             message: "User created successfully",
             data: payStatus
         })
+
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+//Get all payment reciept & total payment
+exports.reciept = async (req, res) => {
+    try {
+        const {userId} = req.query
+        
+        const reciept = await Paid.find({
+            user: userId
+        })
+
+        //Reduce take an array and return in single value(callback, initial value = 0)
+        const totalPayment = reciept.reduce((sum, item) => sum + item.payment, 0)
+
+        res.json(totalPayment)
 
     } catch (error) {
         console.error(error)

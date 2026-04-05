@@ -8,6 +8,7 @@ function Contribution(){
     // Hook to update button into red ot green when status is updated
     const [ update, setUpdate] = useState({})
     const [userUsage, setUserusage] = useState()
+    const [reciept, setReciept] = useState({})
 
     //LocalStorage token
     const token = localStorage.getItem('token')
@@ -67,49 +68,57 @@ function Contribution(){
         const userData = async () => {
 
             try {
-                //This response data is comming from user collection
-                const token = localStorage.getItem('token')
-                const response = await axios.get('http://localhost:3000/users/profile',{
-                    headers:{
-                        "Authorization": `Bearer ${token}`
-                    }
-                })
-                
-                //console.log(`Mao ni reponse s getUser`, response)
-                // Allocate response to data variable
-                setData(response)
-                const thisYear = new Date().getUTCFullYear()
-                const userId = response.data._id
-                setUserusage(userId)
-                //console.log(userId)
-                //console.log(year)
-
-                try {
-                    //-------------------------------------------------------------------------------------
-                    // Getting the payment status from the status collection in database
-                    const paymentStatus = await axios.get('http://localhost:3000/users/status',{
-                        headers: {"Authorization": `Bearer ${token}`},
-                        params:{userId, thisYear}    
-                    })
-
-                    //console.log(paymentStatus.data.months)
-                    const date = paymentStatus.data.createdAt
-                    
-                    //----------------------------------------------------------------------------------------
-                    //Get User latest payment Reciept from "paids" in database
-                    const latestPayment = await axios.get('http://localhost:3000/users/latest_payment',{
-                            params:{userId, thisYear, date}, headers:{"Authorization": `Bearer ${token}`}
+                    //This response data is comming from user collection
+                    const token = localStorage.getItem('token')
+                    const response = await axios.get('http://localhost:3000/users/profile',{
+                        headers:{
+                            "Authorization": `Bearer ${token}`
                         }
-                    )
+                    })
+                
+                    //console.log(`Mao ni reponse s getUser`, response)
+                    // Allocate response to data variable
+                    setData(response)
+                    const thisYear = new Date().getUTCFullYear()
+                    const userId = response.data._id
+                    setUserusage(userId)
+                    //console.log(userId)
+                    //console.log(year)
 
-                    //console.log("Response sa Status sa mga bulan", latestPayment)
+                    try {
+                        //-------------------------------------------------------------------------------------
+                        // Getting the payment status from the status collection in database
+                        const paymentStatus = await axios.get('http://localhost:3000/users/status',{
+                            headers: {"Authorization": `Bearer ${token}`},
+                            params:{userId, thisYear}    
+                        })
+
+                        //console.log(paymentStatus.data.months)
+                        const date = paymentStatus.data.createdAt
                     
-                    //Hook to update the buttons
-                    setUpdate(latestPayment.data.months)
+                        //----------------------------------------------------------------------------------------
+                        //Get User latest payment Reciept from "paids" in database
+                        const latestPayment = await axios.get('http://localhost:3000/users/latest_payment',{
+                                params:{userId, thisYear, date}, headers:{"Authorization": `Bearer ${token}`}
+                            }
+                        )
 
-                } catch (error) {
-                    console.error(error)
-                }
+                        //console.log("Response sa Status sa mga bulan", latestPayment)
+                    
+                        //Hook to update the buttons
+                        setUpdate(latestPayment.data.months)
+
+                        //Get the total of payment
+                        const reciept = await axios.get('http://localhost:3000/users/reciept',{
+                            params:{userId}, headers:{"Authorization": `Bearer ${token}`}
+                        })
+
+                        setReciept(reciept)
+                        console.log(reciept)
+                
+                    } catch (error) {
+                        console.error(error)
+                    }
 
             } catch (error) {
                 console.error(error)
@@ -127,7 +136,7 @@ function Contribution(){
         <>
             <div className="w-screen h-screen flex flex-col relative min-h-screen overflow-hidden bg-linear-to-b from-[#031a46] to-[#1e6fd9] sm:items-center sm:justify-center lg:w-screen lg:justify-center lg:items-center md:w-screen md:justify-center">
                 <div className="w-full h-30 flex flex-row justify-between items-center p-5 lg:w-250 md:w-250">
-                    <h2 className="text-white">Contribution</h2>
+                    <h2 className="text-black bg-amber-400 font-bold">Total Contribution:{(" ") + reciept.data}</h2>
                     <FaTimes size={20} onClick={handleOnClick} className="bg-white rounded-lg"/>
                 </div>
                 <div className="text-white flex flex-row justify-center items-center w-90 h-20 gap-5">
@@ -138,8 +147,8 @@ function Contribution(){
                     </div>
                 </div>
                 <div className="w-full h-140 flex flex-col lg:w-300 md:w-300">
-                    <div className="w-full h-6 flex justify-center items-center">
-                        <h2 className="text-white">1st Quarter</h2>
+                    <div className="w-full h-6 flex justify-center bg-amber-400 items-center">
+                        <h2 className="text-black text-2xl font-bold">1st Quarter</h2>
                     </div>
                     <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
                         <h2 className="text-white text-lg">January</h2>
@@ -165,8 +174,8 @@ function Contribution(){
                         <h2 className="text-white text-lg">June</h2>
                         <button id="6" type="button" className={`w-40 h-7 flex justify-center items-center text-sm  ${update[6]?.status == "paid"? "text-green-400": "text-red-400"}`}>{update[6]?.status}</button>
                     </div>
-                    <div className="w-full h-6 flex justify-center items-center">
-                        <h2 className="text-white">2nd Quarter</h2>
+                    <div className="w-full h-6 flex justify-center bg-amber-400 items-center">
+                        <h2 className="text-black text-2x font-bold">2nd Quarter</h2>
                     </div>
                     <div className="w-full h-10 flex flex-row border-b border-gray-300 justify-between items-center p-2">
                         <h2 className="text-white text-lg">July</h2>

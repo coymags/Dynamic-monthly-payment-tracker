@@ -146,7 +146,7 @@ function Login() {
                             <button  type="submit" className="w-40 h-9 flex justify-center items-center hover:bg-gray-200" >Submit</button>
                         </div>
                         <div className="flex justify-center items-center">
-                            <span onClick={handleNavigate} className="text-white lg:text-2xl md:text-2xl">Register here</span>
+                            <span onClick={handleNavigate} className="text-white text-xl lg:text-xl md:text-xl underline">Register here</span>
                         </div>
                     </form>
                 </div>
